@@ -1,6 +1,6 @@
 [project]
 name = "mcp-system-info"
-version = "0.1.0"
+dynamic = ["version"]
 description = "System Information MCP Server"
 authors = [
     {name = "System Info MCP", email = "noreply@example.com"}
@@ -25,8 +25,11 @@ dev = [
 mcp-system-info = "system_info_mcp.server:main"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatchling-vcs"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/system_info_mcp"]

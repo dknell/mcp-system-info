@@ -64,7 +64,11 @@ class TestCpuInfo:
 
         assert result["per_cpu_percent"] == [42.1, 48.3, 44.7, 46.9]
 
-    def test_get_cpu_info_invalid_interval(self):
+    @patch("system_info_mcp.tools.psutil.cpu_percent")
+    @patch("system_info_mcp.tools.psutil.cpu_count")
+    @patch("system_info_mcp.tools.psutil.cpu_freq")
+    @patch("system_info_mcp.tools.os.getloadavg")
+    def test_get_cpu_info_invalid_interval(self, mock_loadavg, mock_freq, mock_count, mock_percent):
         """Test CPU info with invalid interval."""
         clear_cache()  # Clear cache for clean test
         with pytest.raises(ValueError, match="Interval must be a positive number"):

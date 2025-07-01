@@ -3,7 +3,7 @@
 import os
 import psutil
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from .utils import (
     bytes_to_gb,

@@ -30,7 +30,7 @@ jobs:
       run: uv sync --all-extras --dev
     
     - name: Run tests
-      run: uv run pytest --cov=system_info_mcp --cov-report=xml
+      run: uv run pytest --cov=system_info_mcp --cov-report=term-missing
     
     - name: Run linting
       run: uv run ruff check src/ tests/

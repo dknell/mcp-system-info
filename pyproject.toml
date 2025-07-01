@@ -25,14 +25,14 @@ dev = [
 mcp-system-info = "system_info_mcp.server:main"
 
 [build-system]
-requires = ["hatchling", "hatchling-vcs"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
 
-[tool.hatch.version]
-source = "vcs"
+[tool.setuptools]
+packages = ["system_info_mcp"]
+package-dir = {"" = "src"}
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/system_info_mcp"]
+[tool.setuptools_scm]
 
 [tool.ruff]
 line-length = 88

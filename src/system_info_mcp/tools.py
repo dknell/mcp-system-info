@@ -50,8 +50,11 @@ def get_cpu_info(interval: float = 1.0, per_cpu: bool = False) -> Dict[str, Any]
 
         # Get load average (Unix-like systems only)
         try:
-            load_avg = os.getloadavg()
-            load_average = [round(avg, 2) for avg in load_avg]
+            if hasattr(os, 'getloadavg'):
+                load_avg = os.getloadavg()
+                load_average = [round(avg, 2) for avg in load_avg]
+            else:
+                load_average = [0.0, 0.0, 0.0]
         except (AttributeError, OSError):
             load_average = [0.0, 0.0, 0.0]
 

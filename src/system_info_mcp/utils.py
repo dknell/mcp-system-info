@@ -4,7 +4,7 @@ import asyncio
 import logging
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional, Callable, TypeVar
+from typing import Any, Dict, List, Optional, Callable, TypeVar
 from functools import wraps
 
 from .config import config
@@ -52,7 +52,7 @@ def timestamp_to_iso(timestamp: float) -> str:
     return datetime.fromtimestamp(timestamp, tz=timezone.utc).isoformat()
 
 
-def cache_result(cache_key: str, ttl: Optional[int] = None) -> Callable:
+def cache_result(cache_key: str, ttl: Optional[int] = None) -> Any:
     """Decorator to cache function results with TTL."""
     if ttl is None:
         ttl = config.cache_ttl
@@ -148,7 +148,7 @@ def safe_int(value: Any, default: int = 0) -> int:
         return default
 
 
-def filter_sensitive_cmdline(cmdline: list) -> list:
+def filter_sensitive_cmdline(cmdline: List[str]) -> List[str]:
     """Filter potentially sensitive information from command line arguments."""
     if not cmdline:
         return []

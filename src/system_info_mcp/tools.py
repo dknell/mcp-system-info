@@ -3,7 +3,7 @@
 import os
 import psutil
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from .utils import (
     bytes_to_gb,
@@ -184,7 +184,7 @@ def get_network_info() -> Dict[str, Any]:
         net_if_stats = psutil.net_if_stats()
 
         for interface_name, addresses in net_if_addrs.items():
-            interface_info = {
+            interface_info: Dict[str, Any] = {
                 "name": interface_name,
                 "addresses": [],
                 "is_up": False,
@@ -375,35 +375,37 @@ def get_temperature_info() -> Dict[str, Any]:
 
         # Try to get temperature sensors
         try:
-            sensors_temps = psutil.sensors_temperatures()
-            if sensors_temps:
-                for sensor_name, temps in sensors_temps.items():
-                    for temp in temps:
-                        temp_info = {
-                            "name": temp.label or sensor_name,
-                            "current": round(temp.current, 1),
-                            "unit": "celsius",
-                        }
-                        if temp.high:
-                            temp_info["high"] = round(temp.high, 1)
-                        if temp.critical:
-                            temp_info["critical"] = round(temp.critical, 1)
-                        temperatures.append(temp_info)
+            if hasattr(psutil, 'sensors_temperatures'):
+                sensors_temps = psutil.sensors_temperatures()
+                if sensors_temps:
+                    for sensor_name, temps in sensors_temps.items():
+                        for temp in temps:
+                            temp_info = {
+                                "name": temp.label or sensor_name,
+                                "current": round(temp.current, 1),
+                                "unit": "celsius",
+                            }
+                            if temp.high:
+                                temp_info["high"] = round(temp.high, 1)
+                            if temp.critical:
+                                temp_info["critical"] = round(temp.critical, 1)
+                            temperatures.append(temp_info)
         except (AttributeError, OSError) as e:
             logger.debug(f"Temperature sensors not available: {e}")
 
         # Try to get fan sensors
         try:
-            sensors_fans = psutil.sensors_fans()
-            if sensors_fans:
-                for fan_name, fan_list in sensors_fans.items():
-                    for fan in fan_list:
-                        fan_info = {
-                            "name": fan.label or fan_name,
-                            "current_speed": safe_int(fan.current),
-                            "unit": "rpm",
-                        }
-                        fans.append(fan_info)
+            if hasattr(psutil, 'sensors_fans'):
+                sensors_fans = psutil.sensors_fans()
+                if sensors_fans:
+                    for fan_name, fan_list in sensors_fans.items():
+                        for fan in fan_list:
+                            fan_info = {
+                                "name": fan.label or fan_name,
+                                "current_speed": safe_int(fan.current),
+                                "unit": "rpm",
+                            }
+                            fans.append(fan_info)
         except (AttributeError, OSError) as e:
             logger.debug(f"Fan sensors not available: {e}")
 

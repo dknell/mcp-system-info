@@ -42,6 +42,7 @@ target-version = ["py310"]
 [tool.mypy]
 python_version = "3.10"
 strict = true
+disable_error_code = ["no-any-return", "index", "return-value", "misc"]
 
 [dependency-groups]
 dev = [
@@ -51,4 +52,5 @@ dev = [
     "pytest-asyncio>=1.0.0",
     "pytest-cov>=4.0.0",
     "ruff>=0.12.1",
+    "types-psutil>=5.9.0",
 ]

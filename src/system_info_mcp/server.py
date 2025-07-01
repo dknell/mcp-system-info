@@ -106,7 +106,7 @@ def system_processes() -> str:
     return handler()
 
 
-def main():
+def main() -> None:
     """Main entry point for the server."""
     logger.info(f"Starting {config.name} v{config.version}")
     logger.info(f"Transport: {config.transport}")
